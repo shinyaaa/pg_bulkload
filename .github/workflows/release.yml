@@ -1,0 +1,54 @@
+name: Build and Release RPMs for RHEL with PostgreSQL
+
+on:
+  push:
+    tags:
+      - 'VERSION*'
+
+jobs:
+  build_rpms:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        RHEL_VERSION: ["8", "9"]
+        PG_VERSION: ["12", "13", "14", "15", "16"]
+
+    steps:
+    - name: Set up Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Extract tag name
+      run: echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+    - name: Build RPM in ${{ matrix.image }} with PostgreSQL ${{ matrix.PGVERSION }}
+      run: |
+        export PG_BULKLOAD_VERSION=${{ github.ref }}
+        docker build \
+          --build-arg RHEL_VERSION=${RHEL_VERSION} \
+          --build-arg PG_VERSION=${PG_VERSION} \
+          --build-arg PG_BULKLOAD_VERSION=${PG_BULKLOAD_VERSION} \
+          -t pg_bulkload:${PG_VERSION}-${PG_BULKLOAD_VERSION}-${BUILD_VERSION}-el${RHEL_VERSION} .
+        container_id=$(docker create pg_bulkload:${PG_VERSION}-${PG_BULKLOAD_VERSION}-${BUILD_VERSION}-el${RHEL_VERSION})
+        docker cp $container_id:/var/lib/pgsql/rpmbuild/RPMS/x86_64 ./RPMS-${RHEL_VERSION}-pg${PG_VERSION}
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: true
+        prerelease: false
+
+    - name: Upload RPM
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./RPMS-${{ matrix.image }}-pg${{ matrix.PGVERSION }}/**/*.rpm
+        asset_name: ${{ matrix.image }}-pg${{ matrix.PGVERSION }}-application.rpm
+        asset_content_type: application/x-rpm
