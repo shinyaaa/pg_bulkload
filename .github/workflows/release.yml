@@ -34,7 +34,8 @@ jobs:
           --build-arg RHEL_VERSION=${{ matrix.RHEL_VERSION }} \
           --build-arg PG_VERSION=${{ matrix.PG_VERSION }} \
           --build-arg PG_BULKLOAD_VERSION=${PG_BULKLOAD_VERSION} \
-          -t pg_bulkload:${{ matrix.PG_VERSION }}-${PG_BULKLOAD_VERSION}-${BUILD_VERSION}-el${{ matrix.RHEL_VERSION }} .
+          -t pg_bulkload:${{ matrix.PG_VERSION }}-${PG_BULKLOAD_VERSION}-${BUILD_VERSION}-el${{ matrix.RHEL_VERSION }} \
+          -f .github/Dockerfile
         container_id=$(docker create pg_bulkload:${{ matrix.PG_VERSION }}-${PG_BULKLOAD_VERSION}-${BUILD_VERSION}-el${{ matrix.RHEL_VERSION }})
         docker cp $container_id:/var/lib/pgsql/rpmbuild/RPMS/x86_64 ./RPMS-${{ matrix.RHEL_VERSION }}-pg${{ matrix.PG_VERSION }}
 
