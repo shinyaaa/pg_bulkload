@@ -11,8 +11,8 @@ jobs:
 
     strategy:
       matrix:
-        RHEL_VERSION: ["8", "9"]
-        PG_VERSION: ["12", "13", "14", "15", "16"]
+        RHEL_VERSION: ["9"]
+        PG_VERSION: ["16"]
 
     steps:
     - name: Checkout repository
