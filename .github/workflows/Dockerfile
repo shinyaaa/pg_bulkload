@@ -43,8 +43,7 @@ USER postgres
 WORKDIR /var/lib/pgsql/
 
 RUN rpmdev-setuptree
-RUN git clone https://github.com/ossc-db/pg_bulkload.git
-RUN echo "git archive --format=tar.gz --prefix=pg_bulkload-${PG_BULKLOAD_VERSION}/ --output=../rpmbuild/SOURCES/pg_bulkload-${PG_BULKLOAD_VERSION}.tar.gz VERSION${PG_BULKLOAD_VERSION//./_}"
+RUN git clone https://github.com/shinyaaa/pg_bulkload.git
 RUN cd pg_bulkload && \
     git archive --format=tar.gz --prefix=pg_bulkload-${PG_BULKLOAD_VERSION}/ --output=../rpmbuild/SOURCES/pg_bulkload-${PG_BULKLOAD_VERSION}.tar.gz VERSION${PG_BULKLOAD_VERSION//./_}
 RUN cp -a pg_bulkload/SPECS/pg_bulkload-pg${PG_VERSION}.spec rpmbuild/SPECS
