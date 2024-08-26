@@ -23,7 +23,7 @@ jobs:
 
     - name: Build RPM in ${{ matrix.image }} with PostgreSQL ${{ matrix.PGVERSION }}
       run: |
-        export PG_BULKLOAD_VERSION=${GITHUB_REF_NAME}
+        export PG_BULKLOAD_VERSION=$(echo "${GITHUB_REF_NAME#VERSION}" | sed 's/_/./g')
         docker build \
           --build-arg RHEL_VERSION=${RHEL_VERSION} \
           --build-arg PG_VERSION=${PG_VERSION} \
