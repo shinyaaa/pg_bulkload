@@ -30,7 +30,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
-        context: .github/workflows/Dockerfile
+        file: .github/workflows/Dockerfile
         push: false
         tags: pg_bulkload:${{ matrix.PG_VERSION }}-3-0-el${{ matrix.RHEL_VERSION }}
 
