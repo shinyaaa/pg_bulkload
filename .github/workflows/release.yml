@@ -22,7 +22,7 @@ jobs:
       run: echo ${GITHUB_REF_NAME}
 
     - name: hoge
-      run: echo "${GITHUB_REF_NAME#VERSION}" | sed 's/_/./g'
+      run: echo ${{ matrix.PGVERSION }}
 
     - name: Build RPM in ${{ matrix.image }} with PostgreSQL ${{ matrix.PGVERSION }}
       run: |
