@@ -18,15 +18,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Buildx
-      uses: docker/setup-buildx-action@v2
-
-    - name: Extract tag name
-      run: echo ${GITHUB_REF_NAME}
-
-    - name: hoge
-      run: export PG_BULKLOAD_VERSION=$(echo "${GITHUB_REF_NAME#VERSION}" | sed 's/_/./g')
-
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
@@ -36,7 +27,7 @@ jobs:
           PG_BULKLOAD_VERSION=$(echo "${GITHUB_REF_NAME#VERSION}" | sed 's/_/./g')
         file: .github/workflows/Dockerfile
         push: false
-        tags: pg_bulkload:${{ matrix.PG_VERSION }}-3-0-el${{ matrix.RHEL_VERSION }}
+        tags: pg_bulkload:${{ matrix.PG_VERSION }}-$(echo "${GITHUB_REF_NAME#VERSION}" | sed 's/_/./g')-0-el${{ matrix.RHEL_VERSION }}
 
     # - name: Build RPM in with PostgreSQL ${{ matrix.PG_VERSION }}
     #   run: |
