@@ -26,6 +26,7 @@ jobs:
           PG_VERSION=${{ matrix.PG_VERSION }}
           PG_BULKLOAD_VERSION=$(echo "${GITHUB_REF_NAME#VERSION}" | sed 's/_/./g')
         file: .github/workflows/Dockerfile
+        no-cache: true
         push: false
         tags: pg_bulkload:${{ matrix.PG_VERSION }}-3-0-el${{ matrix.RHEL_VERSION }}
 
