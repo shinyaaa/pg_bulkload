@@ -25,14 +25,14 @@ jobs:
       run: echo ${GITHUB_REF_NAME}
 
     - name: hoge
-      run: ls -Al
+      run: export PG_BULKLOAD_VERSION=$(echo "${GITHUB_REF_NAME#VERSION}" | sed 's/_/./g')
 
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
         context: .github/workflows/Dockerfile
         push: false
-        tags: pg_bulkload:${{ matrix.PG_VERSION }}-${PG_BULKLOAD_VERSION}-${BUILD_VERSION}-el${{ matrix.RHEL_VERSION }}
+        tags: pg_bulkload:${{ matrix.PG_VERSION }}-${PG_BULKLOAD_VERSION}-0-el${{ matrix.RHEL_VERSION }}
 
     # - name: Build RPM in with PostgreSQL ${{ matrix.PG_VERSION }}
     #   run: |
