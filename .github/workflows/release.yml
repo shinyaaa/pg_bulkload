@@ -32,7 +32,7 @@ jobs:
       with:
         context: .github/workflows/Dockerfile
         push: false
-        tags: pg_bulkload:${{ matrix.PG_VERSION }}-${PG_BULKLOAD_VERSION}-0-el${{ matrix.RHEL_VERSION }}
+        tags: pg_bulkload:${{ matrix.PG_VERSION }}-3-0-el${{ matrix.RHEL_VERSION }}
 
     # - name: Build RPM in with PostgreSQL ${{ matrix.PG_VERSION }}
     #   run: |
