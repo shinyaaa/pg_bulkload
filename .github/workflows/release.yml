@@ -21,6 +21,9 @@ jobs:
     - name: Extract tag name
       run: echo ${GITHUB_REF_NAME}
 
+    - name: hoge
+      run: echo "${GITHUB_REF_NAME#VERSION}" | sed 's/_/./g'
+
     - name: Build RPM in ${{ matrix.image }} with PostgreSQL ${{ matrix.PGVERSION }}
       run: |
         export PG_BULKLOAD_VERSION=$(echo "${GITHUB_REF_NAME#VERSION}" | sed 's/_/./g')
