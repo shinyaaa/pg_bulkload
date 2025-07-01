@@ -59,7 +59,7 @@ RUN cd pg_bulkload && \
         --output=../rpmbuild/SOURCES/pg_bulkload-${PG_BULKLOAD_VERSION}.tar.gz
 
 # Build RPMs
-RUN rpmbuild rpmbuild/SPECS/pg_bulkload-pg${PG_VERSION}.spec \
+RUN QA_RPATHS=0x0002 rpmbuild rpmbuild/SPECS/pg_bulkload-pg${PG_VERSION}.spec \
         -bb --define="dist .pg${PG_VERSION}.rhel${RHEL_VERSION}"
 
 
