@@ -32,7 +32,7 @@ RUN dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-${R
 RUN if [ "${RHEL_VERSION}" = "8" ] || [ "${RHEL_VERSION}" = "9" ]; then \
         dnf -qy module disable postgresql; \
     fi
-RUN dnf install -y \
+RUN dnf install -y --enablerepo=pgdg18-updates-testing \
         postgresql${PG_VERSION}-server \
         postgresql${PG_VERSION}-devel \
         postgresql${PG_VERSION}-llvmjit
