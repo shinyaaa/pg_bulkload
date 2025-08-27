@@ -20,7 +20,7 @@ RUN sed -i -e '/^mirrorlist=/s/^/#/' -e '/^#baseurl=/s/^#//' /etc/yum.repos.d/*.
     dnf update -y && \
     dnf install -y \
         clang gcc git krb5-devel libselinux-devel libzstd-devel lz4-devel make \
-        openssl-devel pam-devel readline-devel rpmdevtools zlib-devel
+        openssl-devel pam-devel readline-devel rpmdevtools zlib-devel numactl-devel
 
 # Install PostgreSQL
 RUN if [ "${RHEL_VERSION}" = "8" ]; then \
@@ -32,7 +32,7 @@ RUN dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-${R
 RUN if [ "${RHEL_VERSION}" = "8" ] || [ "${RHEL_VERSION}" = "9" ]; then \
         dnf -qy module disable postgresql; \
     fi
-RUN dnf install -y \
+RUN dnf install -y --enablerepo=pgdg18-updates-testing \
         postgresql${PG_VERSION}-server \
         postgresql${PG_VERSION}-devel \
         postgresql${PG_VERSION}-llvmjit
@@ -50,7 +50,7 @@ WORKDIR /var/lib/pgsql/
 
 # Deploy the files required for the build
 RUN rpmdev-setuptree
-RUN git clone https://github.com/ossc-db/pg_bulkload.git
+RUN git clone https://github.com/shinyaaa/pg_bulkload.git
 RUN cp -a pg_bulkload/SPECS/pg_bulkload-pg${PG_VERSION}.spec rpmbuild/SPECS
 RUN cd pg_bulkload && \
     git archive VERSION${PG_BULKLOAD_VERSION//./_} \
