@@ -21,7 +21,7 @@ RUN sed -i -e '/^mirrorlist=/s/^/#/' -e '/^#baseurl=/s/^#//' /etc/yum.repos.d/*.
     dnf install -y \
         clang gcc git krb5-devel libselinux-devel libzstd-devel lz4-devel make \
         openssl-devel pam-devel readline-devel rpmdevtools zlib-devel \
-        libnuma-dev
+        numactl-devel
 
 # Install PostgreSQL
 RUN if [ "${RHEL_VERSION}" = "8" ]; then \
