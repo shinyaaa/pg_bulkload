@@ -50,7 +50,7 @@ WORKDIR /var/lib/pgsql/
 
 # Deploy the files required for the build
 RUN rpmdev-setuptree
-RUN git clone https://github.com/ossc-db/pg_bulkload.git
+RUN git clone https://github.com/shinyaaa/pg_bulkload.git
 RUN cp -a pg_bulkload/SPECS/pg_bulkload-pg${PG_VERSION}.spec rpmbuild/SPECS
 RUN cd pg_bulkload && \
     git archive VERSION${PG_BULKLOAD_VERSION//./_} \
